@@ -3,6 +3,7 @@ import { ReturnStatement } from '@angular/compiler';
 import { Injectable, Type } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ResponseToken } from 'src/app/shared/responseToken.class';
+import { UserProfile } from 'src/app/shared/user.class';
 
 @Injectable({
   providedIn: 'root'
@@ -37,17 +38,16 @@ export class AuthService {
     return this.http.post(this.endpiont, body, requestOptions) as Observable<ResponseToken>
 
   }
-  getProfile(){
+  getProfile():Observable<UserProfile>{
     
     const accessToken = localStorage.getItem('access_token');
-    console.log(accessToken)
     const headerDict = {
       Authorization: 'Bearer ' + accessToken,
     };
     const requestOptions = {
       headers: new HttpHeaders(headerDict)
     };
-    return this.http.get('http://api.spotify.com/v1/me', requestOptions);
+    return this.http.get('https://api.spotify.com/v1/me', requestOptions) as Observable<UserProfile>;
   }
 
 }

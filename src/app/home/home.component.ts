@@ -22,7 +22,6 @@ export class HomeComponent {
       next(res) {
         console.log(res);
         localStorage.setItem('access_token', res.access_token);
-        console.log(localStorage.getItem('access_token'));
       },
       error(err) {
         console.error(err);

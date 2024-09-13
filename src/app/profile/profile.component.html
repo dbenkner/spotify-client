@@ -1,1 +1,11 @@
-<p>profile works!</p>
+<h1>User Profile</h1>
+
+<section>
+    <h2>Logged in as {{userProfile.display_name}}</h2>
+    <ul>
+        <li>User ID:{{userProfile.id}}</li>
+        <li>Email:{{userProfile.email}}</li>
+        <li>spotify URL<a href="{{userProfile.external_urls?.spotify}}"></a> </li>
+        <li>Link <a href="{{userProfile.href}}">{{userProfile.href}}</a></li>
+    </ul>
+</section>
