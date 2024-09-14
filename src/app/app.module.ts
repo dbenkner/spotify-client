@@ -10,6 +10,7 @@ import { provideOAuthClient } from 'angular-oauth2-oidc';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -22,6 +22,7 @@ export class HomeComponent {
       next(res) {
         console.log(res);
         localStorage.setItem('access_token', res.access_token);
+        localStorage.setItem('refresh_token', res.refresh_token);
       },
       error(err) {
         console.error(err);
