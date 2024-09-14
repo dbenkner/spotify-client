@@ -13,7 +13,7 @@ export class AuthService {
   redirectUri: string = 'http://localhost:4200/home';
   authUrl:string = "https://accounts.spotify.com/authorize";
   endpiont: string = "https://accounts.spotify.com/api/token";
-
+  user?:UserProfile;
   constructor(private http : HttpClient) { }
 
   getToken(code:any):Observable<ResponseToken>{
@@ -38,16 +38,24 @@ export class AuthService {
     return this.http.post(this.endpiont, body, requestOptions) as Observable<ResponseToken>
 
   }
-  getProfile():Observable<UserProfile>{
-    
-    const accessToken = localStorage.getItem('access_token');
+  refreshToken():Observable<ResponseToken>{
+    let refreshToken:string|null = localStorage.getItem('refresh_token');
+    if(refreshToken === null){
+      return new Observable<any>
+    }
+    const url = "https://accounts.spotify.com/api/token";
     const headerDict = {
-      Authorization: 'Bearer ' + accessToken,
+      'Content-Type': 'application/x-www-form-urlencoded'
     };
     const requestOptions = {
       headers: new HttpHeaders(headerDict)
     };
-    return this.http.get('https://api.spotify.com/v1/me', requestOptions) as Observable<UserProfile>;
+    let body = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+      client_id: this.secKey
+    });
+    return this.http.post(url, body, requestOptions) as Observable<ResponseToken>
   }
 
 }
