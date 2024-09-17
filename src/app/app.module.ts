@@ -9,6 +9,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideOAuthClient } from 'angular-oauth2-oidc';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
+import { GetAllUserPlaylistsComponent } from './playlists/get-all-user-playlists/get-all-user-playlists.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ProfileComponent } from './profile/profile.component';
     AppComponent,
     LoginComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    GetAllUserPlaylistsComponent
   ],
   imports: [
     BrowserModule,

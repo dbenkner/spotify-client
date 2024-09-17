@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
 import { ResponseToken } from '../shared/responseToken.class';
+import { UserService } from '../core/services/user.service';
+import { UserProfile } from '../shared/user.class';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-
-  constructor(private authService :AuthService){}
+  userProfile?:UserProfile;
+  constructor(private authService :AuthService, private userService:UserService){}
 
   ngOnInit():void{
     this.response();
-
+    this.loadProfile();
   }
   response():void{
     const urlParams= new URLSearchParams(window.location.search);
@@ -27,6 +29,19 @@ export class HomeComponent {
       error(err) {
         console.error(err);
       },
+    });
+  }
+  loadProfile():void{
+    this.userService.getProfile().subscribe({
+      next:(res) => {
+        this.userProfile = res;
+        if(this.userProfile.type != undefined){
+          localStorage.setItem('userId', this.userProfile.id!);
+        }
+      },
+      error:(err) => {
+        console.error(err);
+      }
     });
   }
 }

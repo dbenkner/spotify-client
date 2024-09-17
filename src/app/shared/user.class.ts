@@ -1,7 +1,7 @@
 import { Image } from "./image.class";
 export class UserProfile {
     country?: string;
-    display_name?: string;
+    display_name: string;
     email?: string;
     explicit_content?: {
         filter_enabled: boolean
@@ -11,7 +11,7 @@ export class UserProfile {
     external_urls?: {spotify:string};
     href?: string;
     id?: string;
-    images?: Image[];
+    images: Image[];
     product?: string;
     type?: string;
     uri?: string;

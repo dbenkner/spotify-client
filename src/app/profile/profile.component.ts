@@ -14,9 +14,23 @@ export class ProfileComponent {
   constructor(private auth: AuthService,
     private userSvc:UserService
   ){}
-  userProfile!:UserProfile|any;
-  profileImage:Image = new Image("url", 200, 200);
-  ngOnInit(){
+  userProfile!:UserProfile;
+  ngOnInit():void{
+    this.refreshToken();
+    this.refreshProfile();
+  }
+  refreshProfile():void{
+    this.userSvc.getProfile().subscribe({
+      next:(res) => {
+        console.log(res);
+        this.userProfile = res;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+  refreshToken():void{
     console.log(localStorage.getItem('access_token'));
     this.auth.refreshToken().subscribe({
       next:(res) => {
@@ -25,25 +39,11 @@ export class ProfileComponent {
         if (res.refresh_token) {
           localStorage.setItem('refresh_token', res.refresh_token);
         };
+        console.log(localStorage.getItem('access_token'));
       },
       error:(err) => {
         console.error(err);
       }
     })
-    this.userSvc.getProfile().subscribe({
-      next:(res) => {
-        console.log(res);
-        this.userProfile = res;
-        if(this.userProfile.images[0]){
-          this.profileImage.height! = 200;
-          this.profileImage.width! = 200;
-          this.profileImage.url! = this.userProfile.image.url;
-          console.log(this.userProfile);
-        }
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
   }
 }
