@@ -1,1 +1,5 @@
 <p>get-all-user-playlists works!</p>
+<p>Number of playlists : {{userPlaylists.total}}</p>
+<ul>
+    <li *ngFor="let item of userPlaylists.items">{{item.name}}</li>
+</ul>
