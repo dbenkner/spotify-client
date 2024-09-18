@@ -10,6 +10,7 @@ import { provideOAuthClient } from 'angular-oauth2-oidc';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { GetAllUserPlaylistsComponent } from './playlists/get-all-user-playlists/get-all-user-playlists.component';
+import { PlayListDetailsComponent } from './playlists/play-list-details/play-list-details.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { GetAllUserPlaylistsComponent } from './playlists/get-all-user-playlists
     LoginComponent,
     HomeComponent,
     ProfileComponent,
-    GetAllUserPlaylistsComponent
+    GetAllUserPlaylistsComponent,
+    PlayListDetailsComponent
   ],
   imports: [
     BrowserModule,
