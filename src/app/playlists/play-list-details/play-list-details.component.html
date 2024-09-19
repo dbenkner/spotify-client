@@ -2,7 +2,16 @@
 <div>
     <table>
         <tbody>
-            <tr *ngFor="let item of playlist.tracks.items"><td>{{item.track.name}}</td><td>{{item.track.duration_ms}}</td></tr>
+            <ng-container *ngFor="let item of playlist.tracks.items">
+                <tr *ngIf="isTrack(item.track)">
+                    <td>{{item.track.name}}</td>
+                    <td>{{item.track.album.name}}</td>
+                    <td><span *ngFor="let artst of item.track.artists">{{artst.name}} </span></td>
+                </tr>
+                <tr *ngIf="!isTrack(item)">
+                    ass
+                </tr>
+            </ng-container>
         </tbody>
     </table>
 </div>

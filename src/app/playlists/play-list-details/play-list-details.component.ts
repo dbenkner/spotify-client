@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PlaylistService } from 'src/app/core/services/playlist.service';
 import { Playlist } from 'src/app/shared/playlist.class';
+import { Track } from 'src/app/shared/Track.class';
 import { Tracks } from 'src/app/shared/tracks.class';
 
 @Component({
@@ -34,5 +35,10 @@ export class PlayListDetailsComponent {
         console.error(err);
       }
     });
+
+  }
+  isTrack(item:any):item is Track{
+    console.log(item);
+    return true;
   }
 }

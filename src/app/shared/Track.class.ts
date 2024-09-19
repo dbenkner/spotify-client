@@ -6,7 +6,7 @@ import { SimplifiedArist } from "./simplifiedArist.class";
 
 export class Track {
     album:Album;
-    artists:SimplifiedArist;
+    artists:SimplifiedArist[];
     available_markets: string[];
     disc_number: number;
     duration_ms: number;
@@ -26,7 +26,7 @@ export class Track {
     uri:string;
     is_local:Boolean;
 
-    constructor(album:Album, artists:SimplifiedArist, available_markets:string[], disc_number:number, duration_ms:number, explicit:Boolean, external_ids:ExternalID, external_urls:ExternalUrl,href:string, id:string, isplayable:Boolean,
+    constructor(album:Album, artists:SimplifiedArist[], available_markets:string[], disc_number:number, duration_ms:number, explicit:Boolean, external_ids:ExternalID, external_urls:ExternalUrl,href:string, id:string, isplayable:Boolean,
         linked_from:Object, restrictions:Restriction, name:string, popularity:number, track_number:number, type:string, uri:string, is_local:Boolean
     ){
         this.album = album;
