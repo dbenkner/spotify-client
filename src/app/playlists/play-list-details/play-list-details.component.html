@@ -1,1 +1,8 @@
 <p>play-list-details works!</p>
+<div>
+    <table>
+        <tbody>
+            <tr *ngFor="let item of playlist.tracks.items"><td>{{item.track.name}}</td><td>{{item.track.duration_ms}}</td></tr>
+        </tbody>
+    </table>
+</div>
