@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, NgZone, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PlayerService } from 'src/app/core/services/player.service';
@@ -28,11 +28,13 @@ export class PlayListDetailsComponent {
   token:string = "";
   playlistCoverUrl:string = "";
   currentSong:string = "";
+  currentArists:any[] = [];
   constructor(private authSvc: AuthService,
     private playlistSvc: PlaylistService,
     private route: ActivatedRoute,
     private playerSvc: PlayerService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private ngZone: NgZone
   ){}
 
   ngOnInit():void{
@@ -92,9 +94,7 @@ export class PlayListDetailsComponent {
     this.playerSvc.startPlayback(this.playlist.uri, this.deviceId.device_id).subscribe({
       next:(res) => {
         console.log(res);
-        setTimeout(() => {
-          this.getState()
-        }, 1000);
+
       },
       error:(err) => {
         console.error(err);
@@ -142,21 +142,23 @@ export class PlayListDetailsComponent {
     this.player.addListener('not_ready', (device_id:string) => {
       console.log('Device ID has gone offline', device_id)
     })
+    this.player.addListener('player_state_changed', () => {
+      console.log("State has changed");
+      this.ngZone.run(() => {
+        this.getState();
+      })
+    });
     this.player.connect();
   }
   next():void{
     this.player.nextTrack().then(() => {
       console.log('next track');
-      setTimeout(() => {
-        this.getState()
-      }, 1000);
     });
   }
   previous():void{
     this.player.previousTrack().then(() => {
       console.log('previous track');
     });
-    this.getState();
   }
   getState():void{
     this.player.getCurrentState().then((state: any) => {
@@ -167,6 +169,8 @@ export class PlayListDetailsComponent {
       var current_track = state.track_window.current_track;
       console.log(current_track);
       this.currentSong = current_track.name;
+      this.currentArists = current_track.artists;
+      console.log(this.currentArists);
     });
   }
 }
