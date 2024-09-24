@@ -14,12 +14,15 @@ export class HomeComponent {
 
   ngOnInit():void{
     this.response();
+    console.log(localStorage.getItem('access_token'));
     this.loadProfile();
   }
   response():void{
     const urlParams= new URLSearchParams(window.location.search);
     let code = urlParams.get('code');
     console.log(code);
+    console.log(localStorage.getItem('access_token'));
+
     this.authService.getToken(code).subscribe({
       next(res) {
         console.log(res);

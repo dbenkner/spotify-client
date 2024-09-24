@@ -29,7 +29,7 @@ export class LoginComponent {
     const params = {
       response_type : 'code',
       client_id: this.authService.secKey,
-      scope,
+      scope: 'user-read-email user-read-private streaming user-read-playback-state app-remote-control user-modify-playback-state',
       code_challenge: codeChallenge,
       code_challenge_method: 'S256',
       redirect_uri: this.authService.redirectUri

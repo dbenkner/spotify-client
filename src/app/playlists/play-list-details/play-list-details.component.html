@@ -1,5 +1,6 @@
 <p>play-list-details works!</p>
 <div>
+    <button (click)="play()">Play</button> <button (click)="pause()">Pause</button>
     <table>
         <tbody>
             <ng-container *ngFor="let item of playlist.tracks.items">

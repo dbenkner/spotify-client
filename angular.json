@@ -52,7 +52,9 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "https://sdk.scdn.co/spotify-player.js"
+            ]
           },
           "configurations": {
             "production": {
