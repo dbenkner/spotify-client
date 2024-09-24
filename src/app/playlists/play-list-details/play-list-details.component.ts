@@ -26,7 +26,8 @@ export class PlayListDetailsComponent {
   deviceId:string|any|null = null;
   player:any|null = null;
   token:string = "";
-  
+  playlistCoverUrl:string = "";
+  currentSong:string = "";
   constructor(private authSvc: AuthService,
     private playlistSvc: PlaylistService,
     private route: ActivatedRoute,
@@ -36,7 +37,6 @@ export class PlayListDetailsComponent {
 
   ngOnInit():void{
     let id:string = this.route.snapshot.params['id'];
-    console.log(id);
     this.loadScript();
     this.playlistSvc.getPlayLists(id).subscribe({
       next:(res) => {
@@ -65,19 +65,22 @@ export class PlayListDetailsComponent {
     }
     this.playerSvc.getAvailableDevices().subscribe({
       next:(res) => {
-        console.log(res);
       },
       error:(err) => {
         console.error(err);
       }
-    })
-    this.player.getCurrentState().then((state: any) => {
-      if(!state) {
-        console.error("User is not playing music through thwe web playbackSDK");
-        return;
+    });
+    console.log("test")
+    this.playlistSvc.getPlaylistCover(id).subscribe({
+      next:(res) => {
+        console.log(res);
+        this.playlistCoverUrl = res[1].url;
+        console.log(this.playlistCoverUrl);
+        console.log("loaded playlist cover");
+      },
+      error:(err) => {
+        console.error("unable to load playlist cover", err);
       }
-      var current_track = state.track_window.current_track;
-      console.log(current_track);
     });
   }
   isTrack(item:any):item is Track{
@@ -89,18 +92,13 @@ export class PlayListDetailsComponent {
     this.playerSvc.startPlayback(this.playlist.uri, this.deviceId.device_id).subscribe({
       next:(res) => {
         console.log(res);
+        setTimeout(() => {
+          this.getState()
+        }, 1000);
       },
       error:(err) => {
         console.error(err);
       }
-    });
-    this.player.getCurrentState().then((state: any) => {
-      if(!state) {
-        console.error("User is not playing music through thwe web playbackSDK");
-        return;
-      }
-      var current_track = state.track_window.current_track;
-      console.log(current_track);
     });
   }
   pause():void{
@@ -111,7 +109,7 @@ export class PlayListDetailsComponent {
         console.log(res);
       },
       error(err){
-        console.error(err);
+        console.error("Unable to", err);
       }
     });
     console.log("Paused!");
@@ -145,5 +143,30 @@ export class PlayListDetailsComponent {
       console.log('Device ID has gone offline', device_id)
     })
     this.player.connect();
+  }
+  next():void{
+    this.player.nextTrack().then(() => {
+      console.log('next track');
+      setTimeout(() => {
+        this.getState()
+      }, 1000);
+    });
+  }
+  previous():void{
+    this.player.previousTrack().then(() => {
+      console.log('previous track');
+    });
+    this.getState();
+  }
+  getState():void{
+    this.player.getCurrentState().then((state: any) => {
+      if(!state) {
+        console.error("User is not playing music through thwe web playbackSDK");
+        return;
+      }
+      var current_track = state.track_window.current_track;
+      console.log(current_track);
+      this.currentSong = current_track.name;
+    });
   }
 }

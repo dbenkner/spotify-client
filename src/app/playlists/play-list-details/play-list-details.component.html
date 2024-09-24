@@ -1,6 +1,18 @@
-<p>play-list-details works!</p>
 <div>
-    <button (click)="play()">Play</button> <button (click)="pause()">Pause</button>
+    <div>
+        <h1>{{playlist.name}}</h1>
+    </div>
+    <div>
+        <div>
+            <img src="{{playlistCoverUrl}}">
+        </div>
+        <div>
+            <h2>{{currentSong}}</h2>
+        </div>
+    </div>
+</div>
+<div>
+    <button (click)="previous()">Previous</button><button (click)="play()">Play</button> <button (click)="pause()">Pause</button> <button (click)="next()">Next</button>
     <table>
         <tbody>
             <ng-container *ngFor="let item of playlist.tracks.items">
