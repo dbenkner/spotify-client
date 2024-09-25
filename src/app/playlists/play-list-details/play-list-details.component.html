@@ -1,31 +1,47 @@
-<div>
-    <div>
-        <h1>{{playlist.name}}</h1>
+<div class="container mx-auto flex flex-col items-center">
+    <div class="">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold">{{playlist.name}}</h1>
+        </div>
+        <div class="mx-auto flex flex-col items-center">
+            <div>
+                <img src="{{playlistCoverUrl}}">
+            </div>
+            <div class="mx-auto">
+                <h2>Song: {{currentSong}}</h2>
+                <div class="flex">
+                    Artist:&nbsp;<span *ngFor="let artist of currentArists"><h3>{{artist.name}}&nbsp;</h3></span>
+                </div>
+                <div class="flex flex-row space-x-4 my-2 text-lg">
+                    <button class="rounded-full bg-green-700 p-1 hover:bg-green-500 active:bg-green-900 text-white w-24" (click)="previous()">Previous</button>
+                    <button class="rounded-full bg-green-700 p-1 hover:bg-green-500 active:bg-green-900 text-white w-24" (click)="play()">Play</button>
+                    <button class="rounded-full bg-green-700 p-1 hover:bg-green-500 active:bg-green-900 text-white w-24" (click)="pause()">Pause</button> 
+                    <button class="rounded-full bg-green-700 p-1 hover:bg-green-500 active:bg-green-900 text-white w-24" (click)="next()">Next</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div>
-        <div>
-            <img src="{{playlistCoverUrl}}">
-        </div>
-        <div>
-            <h2>{{currentSong}}</h2>
-            <span *ngFor="let artist of currentArists"><h3>{{artist.name}}</h3></span>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Song</th>
+                    <th>Album</th>
+                    <th>Artist</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of playlist.tracks.items">
+                    <tr *ngIf="isTrack(item.track)">
+                        <td>{{item.track.name}}</td>
+                        <td>{{item.track.album.name}}</td>
+                        <td><span *ngFor="let artst of item.track.artists">{{artst.name}} </span></td>
+                    </tr>
+                    <tr *ngIf="!isTrack(item)">
+                        ass
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
     </div>
-</div>
-<div>
-    <button (click)="previous()">Previous</button><button (click)="play()">Play</button> <button (click)="pause()">Pause</button> <button (click)="next()">Next</button>
-    <table>
-        <tbody>
-            <ng-container *ngFor="let item of playlist.tracks.items">
-                <tr *ngIf="isTrack(item.track)">
-                    <td>{{item.track.name}}</td>
-                    <td>{{item.track.album.name}}</td>
-                    <td><span *ngFor="let artst of item.track.artists">{{artst.name}} </span></td>
-                </tr>
-                <tr *ngIf="!isTrack(item)">
-                    ass
-                </tr>
-            </ng-container>
-        </tbody>
-    </table>
 </div>
