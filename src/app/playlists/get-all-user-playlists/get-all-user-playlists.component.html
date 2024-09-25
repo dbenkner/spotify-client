@@ -1,5 +1,6 @@
-<p>get-all-user-playlists works!</p>
-<p>Number of playlists : {{userPlaylists.total}}</p>
-<ul>
-    <li *ngFor="let item of userPlaylists.items"><a routerLink="/playlistDetails/{{item.id}}">{{item.name}}</a> | Number of tracks {{item.tracks.total}}</li>
-</ul>
+<div class="container mx-auto flex flex-col items-center">
+    <p>Number of playlists : {{userPlaylists.total}}</p>
+    <ul>
+        <li *ngFor="let item of userPlaylists.items"><a  class="text-xl text-white hover:text-gray-200 active:text-gray-700" routerLink="/playlistDetails/{{item.id}}">{{item.name}}</a> | Number of tracks {{item.tracks.total}}</li>
+    </ul>
+</div>

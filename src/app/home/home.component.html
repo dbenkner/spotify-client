@@ -1,10 +1,9 @@
-<p>home works!</p>
-Now logged into spotify!
-
-<a routerLink="/profile">Profile</a>
-<div>
-    <h2>Welcome {{userProfile?.display_name}}</h2>
-    <ul>
-        <li><a routerLink="/usersPlaylists">Playlists</a></li>
-    </ul>
+<div class="mx-auto border-solid w-96 flex flex-col justify-center">
+    <a class="text-xl text-white hover:text-gray-200 active:text-gray-700" routerLink="/profile">Profile</a>
+    <div>
+        <h2 class="text-2xl">Welcome {{userProfile?.display_name}}</h2>
+        <ul>
+            <li><a class="text-xl text-white hover:text-gray-200 active:text-gray-700" routerLink="/usersPlaylists">Playlists</a></li>
+        </ul>
+    </div>
 </div>
