@@ -29,6 +29,7 @@ export class PlayListDetailsComponent {
   playlistCoverUrl:string = "";
   currentSong:string = "";
   currentArists:any[] = [];
+  state:string="";
   constructor(private authSvc: AuthService,
     private playlistSvc: PlaylistService,
     private route: ActivatedRoute,
@@ -91,28 +92,25 @@ export class PlayListDetailsComponent {
   play():void{
     this.player.togglePlay().then(() => 
     console.log("Toggled Playback!"));
-    this.playerSvc.startPlayback(this.playlist.uri, this.deviceId.device_id).subscribe({
-      next:(res) => {
-        console.log(res);
+    if(this.state == "paused"){
+    }
+    else{
+      this.playerSvc.startPlayback(this.playlist.uri, this.deviceId.device_id).subscribe({
+        next:(res) => {
+          console.log(res);
 
-      },
-      error:(err) => {
-        console.error(err);
-      }
-    });
+        },
+        error:(err) => {
+          console.error(err);
+        }
+      });
+    }
   }
   pause():void{
     this.player.pause();
     console.log(this.deviceId.device_id);
-    this.playerSvc.pausePlayback(this.deviceId.device_id).subscribe({
-      next:(res) => {
-        console.log(res);
-      },
-      error(err){
-        console.error("Unable to", err);
-      }
-    });
     console.log("Paused!");
+    this.state="paused";
   }
   loadScript():void{
     const script = this.renderer.createElement('script');
@@ -173,4 +171,5 @@ export class PlayListDetailsComponent {
       console.log(this.currentArists);
     });
   }
+
 }
