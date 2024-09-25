@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { GetAllUserPlaylistsComponent } from './playlists/get-all-user-playlists/get-all-user-playlists.component';
 import { PlayListDetailsComponent } from './playlists/play-list-details/play-list-details.component';
+import { TruncatePipe } from './shared/truncate.pipe';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { PlayListDetailsComponent } from './playlists/play-list-details/play-lis
     HomeComponent,
     ProfileComponent,
     GetAllUserPlaylistsComponent,
-    PlayListDetailsComponent
+    PlayListDetailsComponent,
+    TruncatePipe
   ],
   imports: [
     BrowserModule,
