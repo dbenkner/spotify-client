@@ -30,6 +30,7 @@ export class PlayListDetailsComponent {
   currentSong:string = "";
   currentArists:any[] = [];
   state:string="";
+  playPause:string = "Play";
   constructor(private authSvc: AuthService,
     private playlistSvc: PlaylistService,
     private route: ActivatedRoute,
@@ -49,19 +50,7 @@ export class PlayListDetailsComponent {
         console.error(err);
       }
     });
-    this.authSvc.refreshToken().subscribe({
-      next:(res) => {
-        console.log(res);
-        localStorage.setItem('access_token', res.access_token);
-        localStorage.setItem('refresh_token', res.refresh_token);
-        localStorage.setItem('scope', res.scope);
-
-        this.token = res.access_token;
-      },
-      error:(err) => {
-        console.error(err);
-      }
-    });
+    this.refreshToken();
     (window as any).onSpotifyWebPlaybackSDKReady = () => {
       console.log('Spotify SDK is rteady');
       this.intalizePlayer();
@@ -76,9 +65,7 @@ export class PlayListDetailsComponent {
     console.log("test")
     this.playlistSvc.getPlaylistCover(id).subscribe({
       next:(res) => {
-        console.log(res);
         this.playlistCoverUrl = res[1].url;
-        console.log(this.playlistCoverUrl);
         console.log("loaded playlist cover");
       },
       error:(err) => {
@@ -89,10 +76,19 @@ export class PlayListDetailsComponent {
   isTrack(item:any):item is Track{
     return true;
   }
+  playPauseBtn():void{
+    this.refreshToken();
+    if(this.playPause === "Play") {
+      this.play();
+    }
+    else{
+      this.pause();
+    }
+  }
   play():void{
     this.player.togglePlay().then(() => 
     console.log("Toggled Playback!"));
-    if(this.state == "paused"){
+    if(this.state === "paused"){
     }
     else{
       this.playerSvc.startPlayback(this.playlist.uri, this.deviceId.device_id).subscribe({
@@ -105,12 +101,13 @@ export class PlayListDetailsComponent {
         }
       });
     }
+    this.playPause = "Pause";
   }
   pause():void{
     this.player.pause();
-    console.log(this.deviceId.device_id);
     console.log("Paused!");
     this.state="paused";
+    this.playPause = "Play";
   }
   loadScript():void{
     const script = this.renderer.createElement('script');
@@ -149,11 +146,13 @@ export class PlayListDetailsComponent {
     this.player.connect();
   }
   next():void{
+    this.refreshToken();
     this.player.nextTrack().then(() => {
       console.log('next track');
     });
   }
   previous():void{
+    this.refreshToken();
     this.player.previousTrack().then(() => {
       console.log('previous track');
     });
@@ -165,11 +164,24 @@ export class PlayListDetailsComponent {
         return;
       }
       var current_track = state.track_window.current_track;
-      console.log(current_track);
       this.currentSong = current_track.name;
       this.currentArists = current_track.artists;
-      console.log(this.currentArists);
     });
   }
+  refreshToken():void{
+    this.authSvc.refreshToken().subscribe({
+      next:(res) => {
+        console.log(res);
+        localStorage.setItem('access_token', res.access_token);
+        localStorage.setItem('refresh_token', res.refresh_token);
+        localStorage.setItem('scope', res.scope);
 
+        this.token = res.access_token;
+        console.log("Token Refreshed");
+      },
+      error:(err) => {
+        console.error(err);
+      }
+    });
+  }
 }
