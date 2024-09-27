@@ -20,7 +20,7 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="mx-auto">
         <table class="border-separate border-spacing-x-3">
             <thead class="text-left">
                 <tr>
@@ -32,7 +32,7 @@
             <tbody>
                 <ng-container *ngFor="let item of playlist.tracks.items">
                     <tr *ngIf="isTrack(item.track)">
-                        <td>{{item.track.name | truncate : 30}}</td>
+                        <td>{{item.track.name | truncate: 30}}</td>
                         <td>{{item.track.album.name | truncate : 30}}</td>
                         <td><span *ngFor="let artst of item.track.artists">{{artst.name}} </span></td>
                     </tr>

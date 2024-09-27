@@ -16,7 +16,7 @@ export class ProfileComponent {
   ){}
   userProfile!:UserProfile;
   ngOnInit():void{
-    this.refreshToken();
+
     this.refreshProfile();
   }
   refreshProfile():void{
@@ -35,7 +35,7 @@ export class ProfileComponent {
     this.auth.refreshToken().subscribe({
       next:(res) => {
         console.log(res);
-        localStorage.setItem('accesss_token', res.access_token);
+        localStorage.setItem('access_token', res.access_token);
         if (res.refresh_token) {
           localStorage.setItem('refresh_token', res.refresh_token);
         };

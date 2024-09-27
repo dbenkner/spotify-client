@@ -42,6 +42,7 @@ export class PlayListDetailsComponent {
   ngOnInit():void{
     let id:string = this.route.snapshot.params['id'];
     this.loadScript();
+    this.refreshToken();
     this.playlistSvc.getPlayLists(id).subscribe({
       next:(res) => {
         this.playlist = res;
@@ -50,7 +51,6 @@ export class PlayListDetailsComponent {
         console.error(err);
       }
     });
-    this.refreshToken();
     (window as any).onSpotifyWebPlaybackSDKReady = () => {
       console.log('Spotify SDK is rteady');
       this.intalizePlayer();
@@ -77,7 +77,6 @@ export class PlayListDetailsComponent {
     return true;
   }
   playPauseBtn():void{
-    this.refreshToken();
     if(this.playPause === "Play") {
       this.play();
     }
@@ -86,6 +85,7 @@ export class PlayListDetailsComponent {
     }
   }
   play():void{
+    this.refreshToken();
     this.player.togglePlay().then(() => 
     console.log("Toggled Playback!"));
     if(this.state === "paused"){
@@ -107,7 +107,7 @@ export class PlayListDetailsComponent {
     this.player.pause();
     console.log("Paused!");
     this.state="paused";
-    this.playPause = "Play";
+    this.playPause = "Play"
   }
   loadScript():void{
     const script = this.renderer.createElement('script');
@@ -146,13 +146,11 @@ export class PlayListDetailsComponent {
     this.player.connect();
   }
   next():void{
-    this.refreshToken();
     this.player.nextTrack().then(() => {
       console.log('next track');
     });
   }
   previous():void{
-    this.refreshToken();
     this.player.previousTrack().then(() => {
       console.log('previous track');
     });

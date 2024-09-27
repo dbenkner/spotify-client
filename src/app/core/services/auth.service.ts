@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ReturnStatement } from '@angular/compiler';
 import { Injectable, Type } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { ResponseToken } from 'src/app/shared/responseToken.class';
 import { UserProfile } from 'src/app/shared/user.class';
 
@@ -38,7 +38,7 @@ export class AuthService {
     return this.http.post(this.endpiont, body, requestOptions) as Observable<ResponseToken>
 
   }
-  refreshToken():Observable<ResponseToken>{
+  refreshToken():Observable<any>{
     let refreshToken:string|null = localStorage.getItem('refresh_token');
     if(refreshToken === null){
       return new Observable<any>
@@ -50,12 +50,24 @@ export class AuthService {
     const requestOptions = {
       headers: new HttpHeaders(headerDict)
     };
+    const scope = localStorage.getItem('scope');
+    console.log(scope);
     let body = new URLSearchParams({
       grant_type: 'refresh_token',
       refresh_token: refreshToken,
-      client_id: this.secKey
+      client_id: this.secKey,
+      scope: scope || ''
     });
-    return this.http.post(url, body, requestOptions) as Observable<ResponseToken>
+    return this.http.post<any>(url, body, requestOptions).pipe(
+      tap((response) => {
+        console.log('token refreshed');
+        localStorage.setItem('access_token', response.access_token);
+      }),
+      catchError((error) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
   }
 
 }
