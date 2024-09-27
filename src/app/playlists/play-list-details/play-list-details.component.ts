@@ -42,7 +42,6 @@ export class PlayListDetailsComponent {
   ngOnInit():void{
     let id:string = this.route.snapshot.params['id'];
     this.loadScript();
-    this.refreshToken();
     this.playlistSvc.getPlayLists(id).subscribe({
       next:(res) => {
         this.playlist = res;
@@ -51,18 +50,6 @@ export class PlayListDetailsComponent {
         console.error(err);
       }
     });
-    (window as any).onSpotifyWebPlaybackSDKReady = () => {
-      console.log('Spotify SDK is rteady');
-      this.intalizePlayer();
-    }
-    this.playerSvc.getAvailableDevices().subscribe({
-      next:(res) => {
-      },
-      error:(err) => {
-        console.error(err);
-      }
-    });
-    console.log("test")
     this.playlistSvc.getPlaylistCover(id).subscribe({
       next:(res) => {
         this.playlistCoverUrl = res[1].url;
@@ -72,6 +59,11 @@ export class PlayListDetailsComponent {
         console.error("unable to load playlist cover", err);
       }
     });
+    (window as any).onSpotifyWebPlaybackSDKReady = () => {
+      console.log('Spotify SDK is rteady');
+      this.intalizePlayer();
+    }
+
   }
   isTrack(item:any):item is Track{
     return true;
@@ -85,7 +77,6 @@ export class PlayListDetailsComponent {
     }
   }
   play():void{
-    this.refreshToken();
     this.player.togglePlay().then(() => 
     console.log("Toggled Playback!"));
     if(this.state === "paused"){
@@ -116,6 +107,7 @@ export class PlayListDetailsComponent {
     console.log("Script loaded", script);
   }
   intalizePlayer():void{
+    this.refreshToken();
     try {
       this.player = new Spotify.Player({
         name: 'Web Playback Player',
